@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/niexiaoguang/brender_node_master#readme",
   "dependencies": {
+    "body-parser": "^1.19.0",
+    "bull": "^3.12.1",
     "express": "^4.17.1",
     "http-status-codes": "^1.4.0",
     "recursive-readdir-async": "^1.1.6"

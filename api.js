@@ -1,14 +1,15 @@
-const packageConfig = require('./package.json'),
-    path = require('path'),
-    crypto = require('crypto'),
-    fs = require('fs');
-
 const config = require('./config.js');
 
 const rra = require('recursive-readdir-async');
-// demo
-// const list = await rra.list('.');
 
+const TaskManager = require('./task_manager.js');
+
+const add_job = (req, res) => {
+    TaskManager.add_job(req, res);
+}
+
+
+// --------------------------------------------------------------------
 const options = {
     mode: rra.LIST,
     recursive: true,
@@ -23,7 +24,7 @@ const options = {
     readContent: false,
     encoding: 'utf-8'
 }
-const getProjects = async (req, res) => {
+const get_projects = async (req, res) => {
 
     var uuid = req.query.uuid;
     var start = req.query.start;
@@ -58,6 +59,6 @@ const getProjects = async (req, res) => {
 
 
 
+exports.add_job = add_job;
 
-
-exports.getProjects = getProjects;
+exports.get_projects = get_projects;
