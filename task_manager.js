@@ -13,10 +13,10 @@ const do_add_job = async (req) => {
 
 };
 
-const add_job = async (req, res) => {
+const add_job = async (req) => {
     var resp = await do_add_job(req);
     console.log('add job result : ' + resp);
-    res.send(resp);
+    return resp;
 }
 
 exports.add_job = add_job;

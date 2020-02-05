@@ -4,8 +4,8 @@ const rra = require('recursive-readdir-async');
 
 const TaskManager = require('./task_manager.js');
 
-const add_job = (req, res) => {
-    TaskManager.add_job(req, res);
+const add_job = async (req) => {
+    return await TaskManager.add_job(req);
 }
 
 
@@ -24,7 +24,7 @@ const options = {
     readContent: false,
     encoding: 'utf-8'
 }
-const get_projects = async (req, res) => {
+const do_get_projects = async (req) => {
 
     var uuid = req.query.uuid;
     var start = req.query.start;
@@ -53,8 +53,12 @@ const get_projects = async (req, res) => {
         }
     }
 
-    res.send(JSON.stringify(resp));
+    return JSON.stringify(resp);
 
+}
+
+const get_projects = async (req) => {
+    return await do_get_projects(req);
 }
 
 
