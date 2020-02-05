@@ -71,10 +71,8 @@ app.post('/api/addjob', jsonParser, function(req, res, next) {
     if (AuthCheck.auth_req1(req) &&
         AuthCheck.check_req_body(req)
     ) {
-        console.log(req.body);
-        res.send('ok');
 
-        // Api.add_job(req, res); //req.body json parsed 
+        Api.add_job(req, res); //req.body json parsed 
     } else {
         handle_error(req, res, 'bad headers params');
 
