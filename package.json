@@ -22,5 +22,8 @@
     "express": "^4.17.1",
     "http-status-codes": "^1.4.0",
     "recursive-readdir-async": "^1.1.6"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2"
   }
 }

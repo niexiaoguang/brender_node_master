@@ -73,7 +73,7 @@ app.post('/api/addjob', jsonParser, async function(req, res, next) {
         AuthCheck.check_req_body(req)
     ) {
 
-        var resp = await Api.add_job(req); //req.body json parsed
+        const resp = await Api.add_job(req); //req.body json parsed
         res.send(resp);
     } else {
         handle_error(req, res, 'bad headers params');
