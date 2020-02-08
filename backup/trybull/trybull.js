@@ -1,8 +1,3 @@
-const Queue = require('bull');
-
-var queue = new Queue('try');
-
-
 var args = process.argv.slice(2);
 
 var Leader = require('./leader.js');
@@ -22,13 +17,13 @@ const test = async (fuid) => {
     return await Leader.add_leader(fuid);
 };
 
-const test1 = async () => {
+const test1 = async (fuid) => {
     await test(fuid);
 };
 
 
 
-test1();
+test1(fuid);
 
 // const showQueue = async () => {
 //     var info = await queue.count();

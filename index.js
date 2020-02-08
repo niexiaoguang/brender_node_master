@@ -67,13 +67,41 @@ app.get('/api/projects', async function(req, res, next) {
 
 // -------------------------------------------------------
 // POST /api/addjob gets JSON bodies
-app.post('/api/addjob', jsonParser, async function(req, res, next) {
+app.post('/api/task/start', jsonParser, async function(req, res, next) {
 
     if (AuthCheck.auth_req1(req) &&
         AuthCheck.check_req_body(req)
     ) {
 
-        const resp = await Api.add_job(req); //req.body json parsed
+        var resp = await Api.start_task(req); //req.body json parsed
+        res.send(resp);
+    } else {
+        handle_error(req, res, 'bad headers params');
+
+    }
+});
+
+
+app.post('/api/task/stop', jsonParser, async function(req, res, next) {
+
+    if (AuthCheck.auth_req1(req) &&
+        AuthCheck.check_req_body(req)
+    ) {
+
+        const resp = await Api.stop_task(req); //req.body json parsed
+        res.send(resp);
+    } else {
+        handle_error(req, res, 'bad headers params');
+
+    }
+});
+
+
+app.get('/api/task/process', async function(req, res, next) {
+
+    if (AuthCheck.auth_req1(req)) {
+
+        const resp = await Api.task_progress(req); //req.body json parsed
         res.send(resp);
     } else {
         handle_error(req, res, 'bad headers params');

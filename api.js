@@ -4,11 +4,17 @@ const rra = require('recursive-readdir-async');
 
 const TaskManager = require('./task_manager.js');
 
-const add_job = async (req) => {
-    return await TaskManager.add_job(req);
+const start_task = async (req) => {
+    return await TaskManager.start_task(req);
 }
 
+const stop_task = async (req) => {
+    return await TaskManager.stop_task(req);
+}
 
+const task_progress = async (req) => {
+    return await TaskManager.task_progress(req);
+}
 // --------------------------------------------------------------------
 const options = {
     mode: rra.LIST,
@@ -63,6 +69,8 @@ const get_projects = async (req) => {
 
 
 
-exports.add_job = add_job;
+exports.start_task = start_task;
+exports.stop_task = stop_task;
+exports.task_progress = task_progress;
 
 exports.get_projects = get_projects;
