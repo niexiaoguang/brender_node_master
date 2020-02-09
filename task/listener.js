@@ -1,12 +1,11 @@
 const Queue = require('bull');
+const config = require('../config.js');
 
-const wQ = new Queue('tryListenerQ');
+const wQ = new Queue(config.JobsQueueName);
 
 
 const mayAddNextJobs = async (job) => {
-    console.log('global completed : ', JSON.stringify(jobId));
-    var job = await wQ.getJob(jobId);
-    console.log(JSON.stringify(job));
+    console.log('global completed : ', JSON.stringify(job));
     var data = job.data;
 
     var sframe = data.opts.frames[0];
@@ -29,19 +28,31 @@ const mayAddNextJobs = async (job) => {
 };
 
 const updateDB = async (job) => {
-    console.log('updateDB for job : ' + JSON.stringify(job));
+    // console.log('updateDB for job : ' + JSON.stringify(job));
 };
 
 const cleanJob = async (job) => {
-    console.log('clean for job : ' + JSON.stringify(job));
+    // console.log('clean for job : ' + JSON.stringify(job));
 
 };
 
 wQ.on('global:completed', async (jobId) => {
+    console.log('global completed job id : ' + jobId);
 
-    var job = wQ.getJob(jobId);
+    var completedJobs = await wQ.getCompleted(0, 0);
+    // console.log(completedJobs);
+    var job = completedJobs[0];
+    // console.log(JSON.stringify(job));
     await mayAddNextJobs(job);
     await updateDB(job);
     await cleanJob(job);
 
 });
+
+// wQ.on('completed', async (job, result) => {
+//     console.log('completed job : ' + JSON.stringify(job));
+//     await mayAddNextJobs(job);
+//     await updateDB(job);
+//     await cleanJob(job);
+
+// });

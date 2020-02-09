@@ -1,6 +1,6 @@
 const staticRootPath = '/home/pata/nginx/html/static/upload/blend/';
 
-const JobsQueueName = 'brender_render_job_queue6';
+const JobsQueueName = 'brender_render_job_queue8';
 
 // -------------------------------------------------------------
 

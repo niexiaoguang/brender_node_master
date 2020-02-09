@@ -3,9 +3,7 @@ const logger = require('../tools/logger.js');
 
 const Queue = require('bull');
 
-const JobQ = new Queue(config.jobsQueueName);
-
-
+const JobQ = new Queue('brender_render_job_queue8');
 
 
 
@@ -49,7 +47,7 @@ const prepare_jobs_data = (rawTaskData) => {
     var sf = rawTaskData.opts.frames[0];
     var ef = rawTaskData.opts.frames[1];
     var step = rawTaskData.opts.step;
-    var workerNum = config.ConWorkersNum;
+    var workernum = config.ConWorkersNum;
     var acc = sf;
     var res = [];
     var res1 = [];
@@ -117,12 +115,16 @@ const start_task = async (req) => {
         var jobsData = prepare_jobs_data(rawTaskData);
 
         jobsData.forEach(async (jobData) => {
-
+            // console.log(jobData);
             var ts = new Date().getTime();
+            var frame = jobData.job.frame;
             var jobId = fuid + config.Seperator + frame + config.Seperator + ts;
             var opts = { jobId: jobId };
             var name = fuid;
             var res = await JobQ.add(name, jobData, opts);
+            // console.log(res);
+
+
 
         });
 
