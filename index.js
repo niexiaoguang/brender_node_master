@@ -7,6 +7,8 @@ const express = require('express'),
     fs = require('fs'),
     bodyParser = require('body-parser');
 
+const Arena = require('bull-arena');
+
 const config = require('./config.js');
 
 const Api = require('./api.js');
@@ -15,6 +17,102 @@ const AuthCheck = require('./auth_check.js');
 
 // create application/json parser
 const jsonParser = bodyParser.json();
+
+const arenaConfig = Arena({
+    queues: [{
+            // Name of the bull queue, this name must match up exactly with what you've defined in bull.
+            name: config.JobsQueueName,
+
+            // Hostname or queue prefix, you can put whatever you want.
+            hostId: "Job queues",
+
+            // Redis auth.
+            redis: {
+                port: 6379,
+                host: '127.0.0.1',
+                password: null
+            }
+        },
+        {
+            // Name of the bull queue, this name must match up exactly with what you've defined in bull.
+            name: config.TasksQueueName1,
+
+            // Hostname or queue prefix, you can put whatever you want.
+            hostId: "Task queues 1",
+
+            // Redis auth.
+            redis: {
+                port: 6379,
+                host: '127.0.0.1',
+                password: null
+            },
+        },
+        {
+            // Name of the bull queue, this name must match up exactly with what you've defined in bull.
+            name: config.TasksQueueName2,
+
+            // Hostname or queue prefix, you can put whatever you want.
+            hostId: "Task queues 2",
+
+            // Redis auth.
+            redis: {
+                port: 6379,
+                host: '127.0.0.1',
+                password: null
+            },
+        },
+        {
+            // Name of the bull queue, this name must match up exactly with what you've defined in bull.
+            name: config.TasksQueueName3,
+
+            // Hostname or queue prefix, you can put whatever you want.
+            hostId: "Task queues 3",
+
+            // Redis auth.
+            redis: {
+                port: 6379,
+                host: '127.0.0.1',
+                password: null
+            },
+        },
+        {
+            // Name of the bull queue, this name must match up exactly with what you've defined in bull.
+            name: config.TasksQueueName4,
+
+            // Hostname or queue prefix, you can put whatever you want.
+            hostId: "Task queues 4",
+
+            // Redis auth.
+            redis: {
+                port: 6379,
+                host: '127.0.0.1',
+                password: null
+            },
+        },
+        {
+            // Name of the bull queue, this name must match up exactly with what you've defined in bull.
+            name: config.TasksQueueName5,
+
+            // Hostname or queue prefix, you can put whatever you want.
+            hostId: "Task queues 5",
+
+            // Redis auth.
+            redis: {
+                port: 6379,
+                host: '127.0.0.1',
+                password: null
+            },
+        },
+
+    ],
+}, {
+    // Make the arena dashboard become available at {my-site.com}/arena.
+    basePath: '/arena',
+
+    // Let express handle the listening.
+    disableListen: true
+});
+
 
 
 function handle_error(req, res, errcode) {
@@ -26,6 +124,10 @@ function handle_error(req, res, errcode) {
 
 
 var app = express();
+
+
+app.use('/', arenaConfig);
+
 
 // -------------------------------------------------------
 app.get('/api/echo', function(req, res, next) {

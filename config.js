@@ -3,6 +3,12 @@ const staticRootPath = '/home/pata/nginx/html/static/upload/blend/';
 const JobsQueueName = 'brender_render_job_queue3';
 
 const TasksQueueName = 'brender_render_task_queue3'
+const TasksQueueName1 = 'brender_render_task_queue31'
+const TasksQueueName2 = 'brender_render_task_queue32'
+const TasksQueueName3 = 'brender_render_task_queue33'
+const TasksQueueName4 = 'brender_render_task_queue34'
+const TasksQueueName5 = 'brender_render_task_queue35'
+
 // -------------------------------------------------------------
 
 
@@ -43,6 +49,12 @@ exports.staticRootPath = staticRootPath;
 
 exports.JobsQueueName = JobsQueueName;
 exports.TasksQueueName = TasksQueueName;
+exports.TasksQueueName1 = TasksQueueName1;
+exports.TasksQueueName2 = TasksQueueName2;
+exports.TasksQueueName3 = TasksQueueName3;
+exports.TasksQueueName4 = TasksQueueName4;
+exports.TasksQueueName5 = TasksQueueName5;
+
 
 exports.OkResp = OkResp;
 exports.TaskExistedErrResp = TaskExistedErrResp;

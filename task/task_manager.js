@@ -6,7 +6,11 @@ const Queue = require('bull');
 const JobQ = new Queue(config.jobsQueueName);
 const TaskQ = new Queue(config.TasksQueueName);
 
-
+const TaskQ1 = new Queue(config.jobsQueueName1);
+const TaskQ2 = new Queue(config.jobsQueueName2);
+const TaskQ3 = new Queue(config.jobsQueueName3);
+const TaskQ4 = new Queue(config.jobsQueueName4);
+const TaskQ5 = new Queue(config.jobsQueueName5);
 
 
 const stop_task_job = async (task) => {
@@ -102,6 +106,29 @@ const prepare_subtasks_data = (rawTaskData) => {
     return res2;
 };
 
+const prepare_subtasks_data1 = (rawTaskData) => {
+    var sf = rawTaskData.opts.frames[0];
+    var ef = rawTaskData.opts.frames[1];
+    var step = rawTaskData.opts.step;
+    var acc = sf;
+    var res1 = [];
+    var res2 = [];
+    while (acc <= ef) {
+        res1.push(acc);
+        acc += step;
+
+    };
+
+    for (var i = 0; i < res1.length; i++) {
+        var data = JSON.parse(JSON.stringify(rawTaskData));
+        data.opts.frames = res1[i];
+        res2.push(data);
+    }
+    console.log('prepared tasks data : ' + JSON.stringify(res2));
+    console.log('length is ' + res2.length);
+    return res2;
+};
+
 
 
 const start_task = async (req) => {
@@ -119,12 +146,18 @@ const start_task = async (req) => {
     } else {
         console.log('start a task');
 
-        var tasksData = prepare_subtasks_data(rawTaskData);
+        var tasksData = prepare_subtasks_data1(rawTaskData);
+
+        // JobQ.process(fuid, 1, async (job) => {
+        //     return await jobWorker(job);
+
+        // });
 
         tasksData.forEach(async (taskData) => {
             var taskId = fuid + config.Seperator + Math.random();
 
-            var res = await TaskQ.add(name = fuid, data = taskData, opts = { jobId: taskId });
+            var res = await TaskQ1.add(name = fuid, data = taskData, opts = { jobId: taskId });
+            // var res = await JobQ.add(name = fuid, data = taskData, opts = { jobId: taskId });
             // console.log('task res : ' + JSON.stringify(res));
 
         });

@@ -2,7 +2,6 @@ const Queue = require('bull');
 const config = require('../config.js');
 
 const JobQ = new Queue(config.jobsQueueName);
-const TaskQ = new Queue(config.TasksQueueName);
 
 
 var args = process.argv.slice(2);
@@ -26,7 +25,7 @@ const jobWorker = async (job) => {
     return JSON.stringify([jobData, tse - tss]);
 };
 
-JobQ.process('*', 1, async (job) => {
+JobQ.process('a7fc0c294192af14cc202587920f17b8', 1, async (job) => {
     return await jobWorker(job);
 
 });
