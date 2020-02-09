@@ -11,10 +11,12 @@ const config = require('./config.js');
 
 const Api = require('./api.js');
 
-const AuthCheck = require('./auth_check.js');
+const AuthCheck = require('./tools/auth_check.js');
 
 // create application/json parser
 const jsonParser = bodyParser.json();
+
+const Arena = require('bull-arena');
 
 
 function handle_error(req, res, errcode) {
@@ -23,9 +25,33 @@ function handle_error(req, res, errcode) {
     res.send('error : ' + errcode);
 };
 
+const arenaConfig = Arena({
+    queues: [{
+        // Name of the bull queue, this name must match up exactly with what you've defined in bull.
+        name: config.JobsQueueName,
+
+        // Hostname or queue prefix, you can put whatever you want.
+        hostId: "Brender Job Queues",
+
+        // Redis auth.
+        redis: {
+            port: 6379,
+            host: '127.0.0.1',
+            password: null,
+        },
+    }, ],
+}, {
+    // Make the arena dashboard become available at {my-site.com}/arena.
+    basePath: '/arena',
+
+    // Let express handle the listening.
+    disableListen: true
+});
 
 
 var app = express();
+
+app.use('/', arenaConfig);
 
 // -------------------------------------------------------
 app.get('/api/echo', function(req, res, next) {

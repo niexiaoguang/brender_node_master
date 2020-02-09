@@ -1,5 +1,5 @@
 const config = require('../config.js');
-const logger = require('../logger.js');
+const logger = require('../tools/logger.js');
 
 const Queue = require('bull');
 

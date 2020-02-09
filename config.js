@@ -33,7 +33,7 @@ const StartExistingTaskErrCode = 4002;
 const Seperator = '-';
 
 // most numbbet of worker at a time for a task , fixed only dev  TODO 
-const ConWorkersNum = 5;
+const ConWorkersNum = 2;
 
 // -------------------------------------------------------------
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -
@@ -41,7 +41,6 @@ const ConWorkersNum = 5;
 exports.staticRootPath = staticRootPath;
 
 exports.JobsQueueName = JobsQueueName;
-exports.TasksQueueName = TasksQueueName;
 
 exports.OkResp = OkResp;
 exports.TaskExistedErrResp = TaskExistedErrResp;
