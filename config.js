@@ -1,8 +1,7 @@
 const staticRootPath = '/home/pata/nginx/html/static/upload/blend/';
 
-const JobsQueueName = 'brender_render_job_queue3';
+const JobsQueueName = 'brender_render_job_queue6';
 
-const TasksQueueName = 'brender_render_task_queue3'
 // -------------------------------------------------------------
 
 
@@ -57,7 +56,7 @@ exports.StartExistingTaskErrCode = StartExistingTaskErrCode;
 
 exports.ConWorkersNum = ConWorkersNum;
 exports.Seperator = Seperator;
-// task data format: 
+// task request data format --------------------------- 
 // {
 //     uuid: 'uuid',
 //     fuid: 'fuid',
@@ -67,5 +66,32 @@ exports.Seperator = Seperator;
 //         samples: 200,
 //         frames: [1, 250],
 // 		   step:1
+//     }
+// }
+
+
+
+
+// task job data format --------------------------------
+
+// {
+//     name: 'fuid',
+//     opts: { jobId: 'fuid' + 'frame' + ts },
+//     data: {
+//         uuid: 'uuid',
+//         fuid: 'fuid',
+//         job: {
+//             workernum: 5, // number of workers at a time 
+//             frame: 3, // current rendering frame
+
+//         },
+//         opts: {
+//             resolution: [1920, 1080],
+//             engine: 'CYCLES' / 'BLENDER_EEVEE',
+//             samples: 200,
+//             frames: [1, 250],
+//             step: 1,
+
+//         }
 //     }
 // }
