@@ -60,6 +60,7 @@ exports.Seperator = Seperator;
 //     uuid: 'uuid',
 //     fuid: 'fuid',
 //     opts: {
+//         scene:'Scene',
 //         resolution: [1920, 1080],
 //         engine: 'CYCLES' / 'BLENDER_EEVEE',
 //         samples: 200,
@@ -85,6 +86,7 @@ exports.Seperator = Seperator;
 
 //         },
 //         opts: {
+//             scene:'Scene',
 //             resolution: [1920, 1080],
 //             engine: 'CYCLES' / 'BLENDER_EEVEE',
 //             samples: 200,
