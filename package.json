@@ -22,7 +22,8 @@
     "bull-arena": "^2.7.1",
     "express": "^4.17.1",
     "http-status-codes": "^1.4.0",
-    "recursive-readdir-async": "^1.1.6"
+    "recursive-readdir-async": "^1.1.6",
+    "winston": "^3.2.1"
   },
   "devDependencies": {
     "nodemon": "^2.0.2"

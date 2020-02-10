@@ -4,6 +4,8 @@ const rra = require('recursive-readdir-async');
 
 const TaskManager = require('./task/manager.js');
 
+const logger = require('./tools/logger.js');
+
 const start_task = async (req) => {
     return await TaskManager.start_task(req);
 }

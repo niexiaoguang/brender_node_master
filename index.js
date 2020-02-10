@@ -18,6 +18,8 @@ const jsonParser = bodyParser.json();
 
 const Arena = require('bull-arena');
 
+const logger = require('./tools/logger.js');
+
 
 function handle_error(req, res, errcode) {
     console.log("======  bad req =======");

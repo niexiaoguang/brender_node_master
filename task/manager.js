@@ -5,7 +5,7 @@ const Queue = require('bull');
 
 const JobQ = new Queue('brender_render_job_queue8');
 
-
+const logger = require('../tools/logger.js');
 
 const stop_task = async (req) => {
 
