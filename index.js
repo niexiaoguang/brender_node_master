@@ -69,31 +69,50 @@ app.get('/api/echo', function(req, res, next) {
 
         // res.sendStatus(200);
     } else {
-        handle_error(req, res, 'bad headers params');
+
+        res.send(config.AuthCheckErrResp);
     }
 });
 
 
 
-// -------------------------------------------------------
-app.get('/api/projects', async function(req, res, next) {
+// +-------------------------------------------------------
+app.get('/api/task/all', async function(req, res, next) {
     console.log(req.headers);
     if (AuthCheck.auth_req1(req) &&
         AuthCheck.check_uuid(req.query.uuid)
 
     ) {
-
-        const resp = await Api.get_projects(req);
+        logger.info(req);
+        const resp = await Api.get_all_task(req);
         res.send(resp);
 
     } else {
-        handle_error(req, res, 'bad headers params');
+        logger.log('error', 'req auth', new Error(req));
+        res.send(config.AuthCheckErrResp);
     }
 });
 
 
-
 // -------------------------------------------------------
+app.get('/api/task/running', async function(req, res, next) {
+    console.log(req.headers);
+    if (AuthCheck.auth_req1(req) &&
+        AuthCheck.check_uuid(req.query.uuid)
+
+    ) {
+        logger.info(req);
+        const resp = await Api.get_running_task(req);
+        res.send(resp);
+
+    } else {
+        logger.log('error', 'req auth', new Error(req));
+        res.send(config.AuthCheckErrResp);
+    }
+});
+
+
+// +-------------------------------------------------------
 // POST /api/addjob gets JSON bodies
 app.post('/api/task/start', jsonParser, async function(req, res, next) {
 
@@ -101,25 +120,33 @@ app.post('/api/task/start', jsonParser, async function(req, res, next) {
         AuthCheck.check_req_body(req)
     ) {
 
-        var resp = await Api.start_task(req); //req.body json parsed
+        logger.info(req);
+        var reqData = req.body;
+        var resp = await Api.start_task(reqData); //req.body json parsed
         res.send(resp);
     } else {
-        handle_error(req, res, 'bad headers params');
+        logger.log('error', 'req auth', new Error(req));
+
+        res.send(config.AuthCheckErrResp);
 
     }
 });
 
-
+// +-------------------------------------------------------
 app.post('/api/task/stop', jsonParser, async function(req, res, next) {
 
     if (AuthCheck.auth_req1(req) &&
         AuthCheck.check_req_body(req)
     ) {
 
+        logger.info(req);
         const resp = await Api.stop_task(req); //req.body json parsed
         res.send(resp);
     } else {
-        handle_error(req, res, 'bad headers params');
+
+        logger.log('error', 'req auth', new Error(req));
+
+        res.send(config.AuthCheckErrResp);
 
     }
 });
@@ -128,11 +155,13 @@ app.post('/api/task/stop', jsonParser, async function(req, res, next) {
 app.get('/api/task/process', async function(req, res, next) {
 
     if (AuthCheck.auth_req1(req)) {
-
+        logger.info(req);
         const resp = await Api.task_progress(req); //req.body json parsed
         res.send(resp);
     } else {
-        handle_error(req, res, 'bad headers params');
+
+        logger.log('error', 'req auth', new Error(req));
+        res.send(config.AuthCheckErrResp);
 
     }
 });

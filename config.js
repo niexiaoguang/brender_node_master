@@ -9,6 +9,19 @@ const OkResp = JSON.stringify({
     status: 'ok'
 });
 // error response 
+
+const AuthCheckErrResp = JSON.stringify({
+    status: "error",
+    info: "auth check failed"
+});
+const AuthCheckErrCode = 4003;
+
+const TaskExistedErrResp = JSON.stringify({
+    status: "error",
+    info: "fuid render task already existed"
+});
+const TaskExistedErrCode = 4000;
+
 const TaskExistedErrResp = JSON.stringify({
     status: "error",
     info: "fuid render task already existed"
@@ -30,13 +43,42 @@ const StartExistingTaskErrResp = JSON.stringify({
 const StartExistingTaskErrCode = 4002;
 
 
+const TaskUserNotMatchErrCode = 4004;
+const TaskUserNotMatchErrResp = JSON.stringify({
+    status: "error";
+    info: "task user not match"
+});
+
+
+const DBErrCode = 4100;
+const DBErrResp = 'db error';
+
+
+
 const Seperator = '-';
 
 // most numbbet of worker at a time for a task , fixed only dev  TODO 
 const ConWorkersNum = 2;
 
+
+const DBHost = '127.0.0.1:32679'; //TODO
+const DBUser = '';
+
+const DBTaskTabName = 'task';
+const DBTaskTabStateColName = 'state';
+const TaskStateCodeFailed = 4;
+const TaskStateCodeFinished = 3;
+const TaskStateCodeStopped = 2;
+const TaskStateCodeStarted = 1;
+const TaskStateCodeUploaded = 0;
 // -------------------------------------------------------------
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -
+exports.TaskStateCodeFailed = TaskStateCodeFailed;
+exports.TaskStateCodeFinished = TaskStateCodeFinished;
+exports.TaskStateCodeStopped = TaskStateCodeStopped;
+exports.TaskStateCodeStarted = TaskStateCodeStarted;
+exports.TaskStateCodeUploaded = TaskStateCodeUploaded;
+
 
 exports.staticRootPath = staticRootPath;
 
@@ -52,9 +94,19 @@ exports.StopNotExistTaskErrCode = StopNotExistTaskErrCode;
 exports.StartExistingTaskErrResp = StartExistingTaskErrResp;
 exports.StartExistingTaskErrCode = StartExistingTaskErrCode;
 
+exports.TaskUserNotMatchErrResp = TaskUserNotMatchErrResp;
+exports.TaskUserNotMatchErrCode = TaskUserNotMatchErrCode;
+
+exports.DBErrCode = DBErrCode;
+exports.DBErrResp = DBErrResp;
 
 exports.ConWorkersNum = ConWorkersNum;
 exports.Seperator = Seperator;
+
+exports.DBHost = DBHost;
+exports.DBUser = DBUser;
+exports.DBTaskTabName = DBTaskTabName;
+exports.DBTaskTabStateColName = DBTaskTabStateColName;
 // task request data format --------------------------- 
 // {
 //     uuid: 'uuid',
@@ -65,7 +117,7 @@ exports.Seperator = Seperator;
 //         engine: 'CYCLES' / 'BLENDER_EEVEE',
 //         samples: 200,
 //         frames: [1, 250],
-// 		   step:1
+//         step:1
 //     }
 // }
 
