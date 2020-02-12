@@ -1,10 +1,3 @@
-const staticRootPath = '/home/pata/nginx/html/static/upload/blend/';
-
-const JobsQueueName = 'brender_render_job_queue8';
-
-// -------------------------------------------------------------
-
-
 const OkResp = JSON.stringify({
     status: 'ok'
 });
@@ -47,6 +40,27 @@ const TaskUserNotMatchErrResp = JSON.stringify({
 const DBErrCode = 4100;
 const DBErrResp = 'db error';
 
+// ----------------------------------------------------
+const DBFuidColName = 'fuid';
+const DBUuidColName = 'uuid';
+const DBTsColName = 'ts';
+const DBStartColName = 'start';
+const DBResColName = 'res';
+const DBEndColName = 'end';
+const DBNameColName = 'name';
+const DBMemoColName = 'memo';
+const DBStateColName = 'state';
+const DBUpdateTsColName = 'update_ts';
+const DBDeviceColName = 'device';
+const DBIdColName = 'id';
+
+
+const DBStateStoppedCode = 'stp';
+const DBStateStartedCode = 'sta';
+const DBStateFinishedCode = 'fin';
+const DBStateFailedCode = 'fai';
+
+
 
 
 const Seperator = '-';
@@ -54,9 +68,6 @@ const Seperator = '-';
 // most numbbet of worker at a time for a task , fixed only dev  TODO 
 const ConWorkersNum = 2;
 
-
-const DBHost = '127.0.0.1:32679'; //TODO
-const DBUser = '';
 
 const DBTaskTabName = 'task';
 const DBTaskTabStateColName = 'state';
@@ -101,6 +112,69 @@ exports.DBHost = DBHost;
 exports.DBUser = DBUser;
 exports.DBTaskTabName = DBTaskTabName;
 exports.DBTaskTabStateColName = DBTaskTabStateColName;
+
+exports.DBFuidColName = DBFuidColName;
+exports.DBUuidColName = DBUuidColName;
+exports.DBTsColName = DBTsColName;
+exports.DBStartColName = DBStartColName;
+exports.DBEndColName = DBEndColName;
+exports.DBNameColName = DBNameColName;
+exports.DBMemoColName = DBMemoColName;
+exports.DBStateColName = DBStateColName;
+exports.DBUpdateTsColName = DBUpdateTsColName;
+exports.DBDeviceColName = DBDeviceColName;
+exports.DBIdColName = DBIdColName;
+
+
+exports.DBStateStoppedCode = DBStateStoppedCode;
+exports.DBStateStartedCode = DBStateStartedCode;
+exports.DBStateFinishedCode = DBStateFinishedCode;
+exports.DBStateFailedCode = DBStateFailedCode;
+
+
+
+// CREATE TABLE jobs
+// ( 
+//   `id` CHAR(30) NOT NULL,
+//   `uuid` CHAR(16) NOT NULL,
+//   `fuid` CHAR(16) NOT NULL,
+//   `ts` CHAR(13) NOT NULL,
+//   `start` TIMESTAMP NOT NULL,
+//   `end` TIMESTAMP NOT NULL,
+//   `state` CHAR(3) NOT NULL,
+//   `device` CHAR(3) NOT NULL,
+//   INDEX(`uuid`),
+//   INDEX(`fuid`),
+//   PRIMARY KEY (`id`)
+// )DEFAULT CHARACTER SET = utf8;
+
+// CREATE TABLE user
+// ( 
+//   `uuid` CHAR(16) NOT NULL,
+//   `passwd` CHAR(16),
+//   `mobile` VARCHAR(16),
+//   `group` CHAR(8),
+//   `level` TINYINT(2) UNSIGNED DEFAULT 1 NOT NULL ,
+//   `creation_date` DATE,
+//   `memo` VARCHAR(64),
+//   UNIQUE INDEX(`mobile`),
+//   PRIMARY KEY (`uuid`)
+// )DEFAULT CHARACTER SET = utf8;
+
+// CREATE TABLE task
+// ( 
+//   `id` CHAR(30) NOT NULL,
+//   `fuid` CHAR(16) NOT NULL,
+//   `uuid` CHAR(16) NOT NULL,
+//   `ts` CHAR(13) NOT NULL,
+//   `name` VARCHAR(64),
+//   `state` CHAR(3) NOT NULL,
+//   `update_ts` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+//   `memo` VARCHAR(128),
+//   INDEX(`uuid`),
+//   INDEX(`fuid`),
+//   PRIMARY KEY (`id`)
+// )DEFAULT CHARACTER SET = utf8;
 // task request data format --------------------------- 
 // {
 //     uuid: 'uuid',

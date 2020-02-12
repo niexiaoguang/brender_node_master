@@ -8,6 +8,7 @@ var gPort;
 var gUser;
 var gPass;
 var gDatabase;
+
 const asyncQuery = async (query) => {
     logger.log('info', 'db query : %s', query);
     var resp;
@@ -36,6 +37,38 @@ const asyncQuery = async (query) => {
     }
 };
 
+const get_task_state_by_fuid = async (fuid) => {
+    var query = 'SELECT * FROM ' +
+        config.DBTaskTabName +
+        ' WHERE ' + config.DBFuidColName + ' = ' +
+        fuid;
+    var resp = await asyncQuery(query);
+    return resp;
+};
+
+const get_task_state_by_uuid = async (uuid) => {
+    var query = 'SELECT * FROM ' +
+        config.DBTaskTabName +
+        ' WHERE ' + config.DBUuidColName + ' = ' +
+        uuid;
+    var resp = await asyncQuery(query);
+    return resp;
+};
+
+const stop_task_by_id = async (taskId) => {
+    return update_task_state(taskId, config.DBStateStoppedCode);
+}
+
+// ----------------------------------   inner use ================  
+const update_task_state = async (taskId, state) => {
+    var query = 'UPDATE ' + config.DBTaskTabName +
+        ' SET ' +
+        config.DBStateColName + ' = ' + state +
+        ' WHERE ' + config.DBIdColName + ' = ' + taskId;
+    var resp = await asyncQuery(query);
+    return resp;
+}
+
 
 const check_fuid_uuid = async (fuid, uuid) => {
     var query = 'SELECT * FROM ' +
@@ -46,36 +79,8 @@ const check_fuid_uuid = async (fuid, uuid) => {
     return resp.uuid == uuid;
 };
 
-const query_all_task = async (uuid) => {
-    const query = 'SELECT * FROM ' +
-        config.DBTaskTabName +
-        ' WHERE uuid = ' +
-        uuid;
-
-    var resp = await asyncQuery(query);
-
-    logger.info(resp);
-
-    return resp;
-
-};
-
-const update_task_state = async (fuid, code) => {
-    var query = 'UPDATE ' + config.DBTaskTabName +
-        ' SET ' + config.DBActionColName + ' = ' +
-        code +
-        ' WHERE ' + config.DBFuidColName +
-        ' = ' +
-        fuid;
 
 
-    var resp = await asyncQuery(query);
-
-    logger.info(resp);
-    return resp;
-
-
-};
 
 const init = async (host, port, user, pass, dbName) => {
     gHost = host;
@@ -89,6 +94,8 @@ const init = async (host, port, user, pass, dbName) => {
 };
 
 
-exports.query_all_task = query_all_task;
+exports.stop_task_by_id = stop_task_by_id;
 exports.check_fuid_uuid = check_fuid_uuid;
+exports.get_task_state_by_uuid = get_task_state_by_uuid;
+exports.get_task_state_by_fuid = get_task_state_by_fuid;
 exports.init = init;
