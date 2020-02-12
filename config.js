@@ -22,12 +22,6 @@ const TaskExistedErrResp = JSON.stringify({
 });
 const TaskExistedErrCode = 4000;
 
-const TaskExistedErrResp = JSON.stringify({
-    status: "error",
-    info: "fuid render task already existed"
-});
-const TaskExistedErrCode = 4000;
-
 
 const StopNotExistTaskErrResp = JSON.stringify({
     status: "error",
@@ -45,7 +39,7 @@ const StartExistingTaskErrCode = 4002;
 
 const TaskUserNotMatchErrCode = 4004;
 const TaskUserNotMatchErrResp = JSON.stringify({
-    status: "error";
+    status: "error",
     info: "task user not match"
 });
 

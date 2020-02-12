@@ -1,8 +1,7 @@
-const winston = require('winston');
-const createLogger = winston.createLogger;
-const format = winston.format;
-const transports = winston.transports;
+const { createLogger, format, transports } = require('winston');
+const path = require('path');
 
+var ts = new Date().getTime();
 
 const logger = createLogger({
     level: 'info',
@@ -14,14 +13,14 @@ const logger = createLogger({
         format.splat(),
         format.json()
     ),
-    defaultMeta: { service: 'brender_node_task_server' },
+    defaultMeta: { service: 'brender_node_render' },
     transports: [
         //
         // - Write to all logs with level `info` and below to `quick-start-combined.log`.
         // - Write all logs error (and below) to `quick-start-error.log`.
         //
-        new transports.File({ filename: 'brender_node_task_server-error.log', level: 'error' }),
-        new transports.File({ filename: 'brender_node_task_server-combined.log' })
+        new transports.File({ filename: path.join(__dirname, 'brender_node_task_server-error' + ts + '.log'), level: 'error' }),
+        new transports.File({ filename: path.join(__dirname, 'brender_node_task_server-combined' + ts + '.log') })
     ]
 });
 
@@ -39,7 +38,9 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 
+
 exports.logger = logger;
+
 
 
 
