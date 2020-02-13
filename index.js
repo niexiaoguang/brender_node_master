@@ -1,6 +1,6 @@
 const config = require('./config.js');
 
-const { logger } = require('./log/logger.js'); // require module as logger not the object inside which required by {logger}
+const { logger } = require('./tools/logger.js'); // require module as logger not the object inside which required by {logger}
 
 const DB = require('./tools/db.js');
 

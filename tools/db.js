@@ -1,6 +1,6 @@
 const config = require('../config.js');
 const mariadb = require('mariadb');
-const { logger } = require('../log/logger.js');
+const { logger } = require('./logger.js');
 
 
 var gHost;

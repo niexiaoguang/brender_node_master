@@ -4,7 +4,7 @@ const DB = require('./tools/db.js');
 
 const TaskManager = require('./task/manager.js');
 
-const logger = require('./log/logger.js');
+const logger = require('./tools/logger.js');
 
 const start_task = async (reqData) => {
     var fuid = reqData.fuid;
