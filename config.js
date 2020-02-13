@@ -121,12 +121,6 @@ exports.Seperator = Seperator;
 
 
 
-exports.DBHost = DBHost;
-exports.DBUser = DBUser;
-
-
-
-
 exports.DBTabNameTask = DBTabNameTask;
 exports.DBTabNameJobs = DBTabNameJobs;
 exports.DBTabNameFiles = DBTabNameFiles;
