@@ -1,3 +1,8 @@
+const RootPath = '/media/';
+
+// -------------------------------------------------------------
+
+
 const OkResp = JSON.stringify({
     status: 'ok'
 });
@@ -14,6 +19,12 @@ const TaskExistedErrResp = JSON.stringify({
     info: "fuid render task already existed"
 });
 const TaskExistedErrCode = 4000;
+
+const TaskConfigFileSaveErrorResp = JSON.stringify({
+    status: 'error',
+    info: "config file save error"
+});
+const TaskConfigFileSaveErrorCode = 4005;
 
 
 const StopNotExistTaskErrResp = JSON.stringify({
@@ -87,6 +98,15 @@ exports.StartExistingTaskErrCode = StartExistingTaskErrCode;
 exports.TaskUserNotMatchErrResp = TaskUserNotMatchErrResp;
 exports.TaskUserNotMatchErrCode = TaskUserNotMatchErrCode;
 
+
+exports.TaskConfigFileSaveErrorCode = TaskConfigFileSaveErrorCode;
+exports.TaskConfigFileSaveErrorResp = TaskConfigFileSaveErrorResp;
+
+
+
+
+
+
 exports.DBErrCode = DBErrCode;
 exports.DBErrResp = DBErrResp;
 
@@ -125,91 +145,3 @@ exports.DBStateCodeStopped = DBStateCodeStopped;
 exports.DBStateCodeStarted = DBStateCodeStarted;
 exports.DBStateCodeFinished = DBStateCodeFinished;
 exports.DBStateCodeFailed = DBStateCodeFailed;
-
-
-
-
-
-// CREATE TABLE jobs
-// ( 
-//   `id` CHAR(30) NOT NULL,
-//   `uuid` CHAR(16) NOT NULL,
-//   `fuid` CHAR(16) NOT NULL,
-//   `ts` CHAR(13) NOT NULL,
-//   `start` TIMESTAMP NOT NULL,
-//   `end` TIMESTAMP NOT NULL,
-//   `state` CHAR(3) NOT NULL,
-//   `device` CHAR(3) NOT NULL,
-//   INDEX(`uuid`),
-//   INDEX(`fuid`),
-//   PRIMARY KEY (`id`)
-// )DEFAULT CHARACTER SET = utf8;
-
-// CREATE TABLE user
-// ( 
-//   `uuid` CHAR(16) NOT NULL,
-//   `passwd` CHAR(16),
-//   `mobile` VARCHAR(16),
-//   `group` CHAR(8),
-//   `level` TINYINT(2) UNSIGNED DEFAULT 1 NOT NULL ,
-//   `creation_date` DATE,
-//   `memo` VARCHAR(64),
-//   UNIQUE INDEX(`mobile`),
-//   PRIMARY KEY (`uuid`)
-// )DEFAULT CHARACTER SET = utf8;
-
-// CREATE TABLE task
-// ( 
-//   `id` CHAR(30) NOT NULL,
-//   `fuid` CHAR(16) NOT NULL,
-//   `uuid` CHAR(16) NOT NULL,
-//   `ts` CHAR(13) NOT NULL,
-//   `name` VARCHAR(64),
-//   `state` CHAR(3) NOT NULL,
-//   `update_ts` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-//   `memo` VARCHAR(128),
-//   INDEX(`uuid`),
-//   INDEX(`fuid`),
-//   PRIMARY KEY (`id`)
-// )DEFAULT CHARACTER SET = utf8;
-// task request data format --------------------------- 
-// {
-//     uuid: 'uuid',
-//     fuid: 'fuid',
-//     opts: {
-//         scene:'Scene',
-//         resolution: [1920, 1080],
-//         engine: 'CYCLES' / 'BLENDER_EEVEE',
-//         samples: 200,
-//         frames: [1, 250],
-//         step:1
-//     }
-// }
-
-
-
-
-// task job data format --------------------------------
-
-// {
-//     name: 'fuid',
-//     opts: { jobId: 'fuid' + 'frame' + ts },
-//     data: {
-//         uuid: 'uuid',
-//         fuid: 'fuid',
-//         job: {
-//             workernum: 5, // number of workers at a time 
-//             frame: 3, // current rendering frame
-
-//         },
-//         opts: {
-//             scene:'Scene',
-//             resolution: [1920, 1080],
-//             engine: 'CYCLES' / 'BLENDER_EEVEE',
-//             samples: 200,
-//             frames: [1, 250],
-//             step: 1,
-
-//         }
-//     }
-// }

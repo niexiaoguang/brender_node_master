@@ -76,8 +76,29 @@ const start_task = async (data) => {
 
     var jobsData = prepare_jobs_data(rawTaskData);
 
-    var taskId = fuid + config.Seperator + new Date().getTime();
+    var ts = new Date().getTime();
+    var taskId = fuid + config.Seperator + ts;
+    var taskFolderPath = config.RootPath + uuid + '/' + fuid + '/' + ts;
 
+    if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir);
+    } else {
+        logger.error(config.TaskExistedErrCode);
+        return config.TaskExistedErrResp;
+    }
+
+    var configFilePath = taskFolderPath + '/config.json';
+
+    // save config data into file
+
+    fs.writeFile(configFilePath, JSON.stringify(rawTaskData, null, 4), (err) => {
+        if (err) {
+            logger.error('cant save config file');
+
+            return config.TaskConfigFileSaveErrorCode;
+        };
+        logger.info('config file saved');
+    });
 
     // update db action
     var dbResp = await DB.add_task(taskId, uuid);
