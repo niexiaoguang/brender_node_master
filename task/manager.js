@@ -1,5 +1,6 @@
 const config = require('../config.js');
 const logger = require('../log/logger.js');
+const fs = require('fs');
 
 const Queue = require('bull');
 
@@ -75,15 +76,37 @@ const start_task = async (data) => {
 
 
     var jobsData = prepare_jobs_data(rawTaskData);
+    var ts = new Date().getTime();
+    var taskId = fuid + config.Seperator + ts;
+    var taskFolderPath = config.RootPath + uuid + '/' + fuid + '/' + ts;
 
-    var taskId = fuid + config.Seperator + new Date().getTime();
+    if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir);
+    } else {
+        logger.error(config.TaskExistedErrCode);
+        return config.TaskExistedErrResp;
+    }
 
+    var configFilePath = taskFolderPath + '/config.js';
 
+    // save config data into file
+
+    fs.writeFile("configFilePath", JSON.stringify(rawTaskData, null, 4), (err) => {
+        if (err) {
+            logger.error('cant save config file');
+
+            return config.TaskConfigFileSaveErrorCode;
+        };
+        logger.info('config file saved');
+    });
     // update db action
     var dbResp = await DB.add_task(taskId, uuid);
 
 
     if (dbResp !== config.DBErrCode) {
+        // create folder for saving rendered image
+
+
         jobsData.forEach(async (jobData) => {
 
             var ts = new Date().getTime();

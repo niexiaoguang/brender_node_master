@@ -1,20 +1,8 @@
-<<<<<<< HEAD
-const staticRootPath = '/home/pata/nginx/html/static/upload/blend/';
-
-const JobsQueueName = 'brender_render_job_queue3';
-
-const TasksQueueName = 'brender_render_task_queue3'
-const TasksQueueName1 = 'brender_render_task_queue31'
-const TasksQueueName2 = 'brender_render_task_queue32'
-const TasksQueueName3 = 'brender_render_task_queue33'
-const TasksQueueName4 = 'brender_render_task_queue34'
-const TasksQueueName5 = 'brender_render_task_queue35'
+const RootPath = '/media/'; // TODO 
 
 // -------------------------------------------------------------
 
 
-=======
->>>>>>> 0.3.1
 const OkResp = JSON.stringify({
     status: 'ok'
 });
@@ -31,6 +19,12 @@ const TaskExistedErrResp = JSON.stringify({
     info: "fuid render task already existed"
 });
 const TaskExistedErrCode = 4000;
+
+const TaskConfigFileSaveErrorResp = JSON.stringify({
+    status: 'error',
+    info: "config file save error"
+});
+const TaskConfigFileSaveErrorCode = 4005;
 
 
 const StopNotExistTaskErrResp = JSON.stringify({
@@ -90,17 +84,6 @@ const ConWorkersNum = 2;
 
 // -------------------------------------------------------------
 
-<<<<<<< HEAD
-exports.JobsQueueName = JobsQueueName;
-exports.TasksQueueName = TasksQueueName;
-exports.TasksQueueName1 = TasksQueueName1;
-exports.TasksQueueName2 = TasksQueueName2;
-exports.TasksQueueName3 = TasksQueueName3;
-exports.TasksQueueName4 = TasksQueueName4;
-exports.TasksQueueName5 = TasksQueueName5;
-
-=======
->>>>>>> 0.3.1
 
 exports.OkResp = OkResp;
 exports.TaskExistedErrResp = TaskExistedErrResp;
@@ -114,6 +97,15 @@ exports.StartExistingTaskErrCode = StartExistingTaskErrCode;
 
 exports.TaskUserNotMatchErrResp = TaskUserNotMatchErrResp;
 exports.TaskUserNotMatchErrCode = TaskUserNotMatchErrCode;
+
+
+exports.TaskConfigFileSaveErrorCode = TaskConfigFileSaveErrorCode;
+exports.TaskConfigFileSaveErrorResp = TaskConfigFileSaveErrorResp;
+
+
+
+
+
 
 exports.DBErrCode = DBErrCode;
 exports.DBErrResp = DBErrResp;
