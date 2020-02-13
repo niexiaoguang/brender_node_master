@@ -1,6 +1,3 @@
-const path = require('path'),
-    fs = require('fs');
-
 const config = require('./config.js');
 
 const { logger } = require('./log/logger.js'); // require module as logger not the object inside which required by {logger}

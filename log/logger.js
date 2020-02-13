@@ -1,5 +1,5 @@
 const { createLogger, format, transports } = require('winston');
-const path = require('path');
+const config = require('../config.js');
 
 var ts = new Date().getTime();
 
@@ -19,8 +19,8 @@ const logger = createLogger({
         // - Write to all logs with level `info` and below to `quick-start-combined.log`.
         // - Write all logs error (and below) to `quick-start-error.log`.
         //
-        new transports.File({ filename: path.join(__dirname, 'brender_node_task_server-error' + ts + '.log'), level: 'error' }),
-        new transports.File({ filename: path.join(__dirname, 'brender_node_task_server-combined' + ts + '.log') })
+        new transports.File({ filename: config.logPath + 'brender_node_render-error-' + ts + '.log', level: 'error' }),
+        new transports.File({ filename: config.logPath + 'brender_node_render-combined-' + ts + '.log' })
     ]
 });
 
