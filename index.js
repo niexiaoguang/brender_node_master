@@ -1,23 +1,17 @@
-// hello world
-const express = require('express'),
-    HttpStatus = require('http-status-codes'),
-    packageConfig = require('./package.json'),
-    path = require('path'),
-    crypto = require('crypto'),
-    fs = require('fs'),
-    bodyParser = require('body-parser');
+const path = require('path'),
+    fs = require('fs');
 
 const Arena = require('bull-arena');
 
 const config = require('./config.js');
 
-const Api = require('./api.js');
+const { logger } = require('./log/logger.js'); // require module as logger not the object inside which required by {logger}
 
-const AuthCheck = require('./auth_check.js');
+const DB = require('./tools/db.js');
 
-// create application/json parser
-const jsonParser = bodyParser.json();
+const httpServer = require('./http_server.js');
 
+<<<<<<< HEAD
 const arenaConfig = Arena({
     queues: [{
             // Name of the bull queue, this name must match up exactly with what you've defined in bull.
@@ -164,54 +158,55 @@ app.get('/api/projects', async function(req, res, next) {
         handle_error(req, res, 'bad headers params');
     }
 });
+=======
+const manager = require('./task/manager.js');
+
+var argv = process.argv.splice(2);
+>>>>>>> 0.3.1
 
 
+const do_init = async (argv) => {
 
-// -------------------------------------------------------
-// POST /api/addjob gets JSON bodies
-app.post('/api/task/start', jsonParser, async function(req, res, next) {
+    // process.env.NODE_ENV = 'production';
 
-    if (AuthCheck.auth_req1(req) &&
-        AuthCheck.check_req_body(req)
-    ) {
+    var myid = argv[0];
+    logger.info('my id : ' + myid);
 
-        var resp = await Api.start_task(req); //req.body json parsed
-        res.send(resp);
-    } else {
-        handle_error(req, res, 'bad headers params');
-
-    }
-});
-
-
-app.post('/api/task/stop', jsonParser, async function(req, res, next) {
-
-    if (AuthCheck.auth_req1(req) &&
-        AuthCheck.check_req_body(req)
-    ) {
-
-        const resp = await Api.stop_task(req); //req.body json parsed
-        res.send(resp);
-    } else {
-        handle_error(req, res, 'bad headers params');
+    var redisHost = argv[7];
+    var redisPort = argv[8];
+    var redisPass = argv[9];
+    // for dev only =============  =============
+    // export NODE_ENV=production
+    if (process.env.NODE_ENV !== 'production') {
+        httpServer.init_arena(redisHost, redisPort, redisPass);
 
     }
-});
 
+    var queueName = argv[6];
+    manager.init_queue_name(queueName);
 
-app.get('/api/task/process', async function(req, res, next) {
+    var dbHost = argv[1];
+    var dbPort = argv[2];
+    var dbUser = argv[3];
+    var dbPass = argv[4];
+    var dbName = argv[5];
+    var resp = await DB.init(dbHost, dbPort, dbUser, dbPass, dbName);
+    // logger.info(JSON.stringify(resp));
+    return resp;
 
-    if (AuthCheck.auth_req1(req)) {
+};
 
-        const resp = await Api.task_progress(req); //req.body json parsed
-        res.send(resp);
-    } else {
-        handle_error(req, res, 'bad headers params');
+const start = () => {
+    logger.info('init done , start');
+    httpServer.start();
+};
 
-    }
-});
+const init = async () => {
+    var res = await do_init(argv);
+    logger.info('init with : ' + JSON.stringify(res));
+    start();
+}
 
+init();
 
-
-
-app.listen(5000);
+// node index.js myid 127.0.0.1 32768 root mymaria BRENDER
