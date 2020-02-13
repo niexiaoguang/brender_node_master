@@ -80,15 +80,9 @@ const start = () => {
 
         ) {
             var uuid = req.query.uuid;
-            var fuid = req.query.fuid;
-            var resp;
+
             logger.info(req);
-            if (uuid && !fuid) {
-                resp = await Api.get_task_state_by_uuid(uuid); // add params for pagination ------ TODO
-            }
-            if (!uuid && fuid) {
-                resp = await Api.get_task_state_by_fuid(fuid);
-            }
+            var resp = await Api.get_task_by_uuid(uuid);
 
             res.send(resp);
 
@@ -128,7 +122,7 @@ const start = () => {
 
             logger.info(req);
             var reqData = req.body;
-            const resp = await Api.stop_task_by_id(reqData); //req.body json parsed
+            const resp = await Api.stop_task(reqData); //req.body json parsed
             res.send(resp);
         } else {
 

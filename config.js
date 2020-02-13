@@ -41,24 +41,26 @@ const DBErrCode = 4100;
 const DBErrResp = 'db error';
 
 // ----------------------------------------------------
-const DBFuidColName = 'fuid';
-const DBUuidColName = 'uuid';
-const DBTsColName = 'ts';
-const DBStartColName = 'start';
-const DBResColName = 'res';
-const DBEndColName = 'end';
-const DBNameColName = 'name';
-const DBMemoColName = 'memo';
-const DBStateColName = 'state';
-const DBUpdateTsColName = 'update_ts';
-const DBDeviceColName = 'device';
-const DBIdColName = 'id';
+// ----------------------------------------------------
+const DBTabNameTask = 'tuid';
+const DBTabNameJobs = 'jobs';
+const DBTabNameFiles = 'fuid';
 
+const DBColNameFuid = 'fuid';
+const DBColNameUuid = 'uuid';
+const DBColNameTuid = 'tuid';
+const DBColNameStart = 'start';
+const DBColNameEnd = 'end';
+const DBColNameState = 'state';
+const DBColNameUpdateTs = 'update_ts';
+const DBColNameDevice = 'device';
+const DBColNameId = 'id';
+const DBColNameSuid = 'suid';
 
-const DBStateStoppedCode = 'stp';
-const DBStateStartedCode = 'sta';
-const DBStateFinishedCode = 'fin';
-const DBStateFailedCode = 'fai';
+const DBStateCodeStopped = 'stp';
+const DBStateCodeStarted = 'sta';
+const DBStateCodeFinished = 'fin';
+const DBStateCodeFailed = 'fai';
 
 
 
@@ -69,25 +71,8 @@ const Seperator = '-';
 const ConWorkersNum = 2;
 
 
-const DBTaskTabName = 'task';
-const DBTaskTabStateColName = 'state';
-const TaskStateCodeFailed = 4;
-const TaskStateCodeFinished = 3;
-const TaskStateCodeStopped = 2;
-const TaskStateCodeStarted = 1;
-const TaskStateCodeUploaded = 0;
 // -------------------------------------------------------------
-// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -
-exports.TaskStateCodeFailed = TaskStateCodeFailed;
-exports.TaskStateCodeFinished = TaskStateCodeFinished;
-exports.TaskStateCodeStopped = TaskStateCodeStopped;
-exports.TaskStateCodeStarted = TaskStateCodeStarted;
-exports.TaskStateCodeUploaded = TaskStateCodeUploaded;
 
-
-exports.staticRootPath = staticRootPath;
-
-exports.JobsQueueName = JobsQueueName;
 
 exports.OkResp = OkResp;
 exports.TaskExistedErrResp = TaskExistedErrResp;
@@ -105,31 +90,43 @@ exports.TaskUserNotMatchErrCode = TaskUserNotMatchErrCode;
 exports.DBErrCode = DBErrCode;
 exports.DBErrResp = DBErrResp;
 
+
+
+
 exports.ConWorkersNum = ConWorkersNum;
 exports.Seperator = Seperator;
 
+
+
+
+
 exports.DBHost = DBHost;
 exports.DBUser = DBUser;
-exports.DBTaskTabName = DBTaskTabName;
-exports.DBTaskTabStateColName = DBTaskTabStateColName;
-
-exports.DBFuidColName = DBFuidColName;
-exports.DBUuidColName = DBUuidColName;
-exports.DBTsColName = DBTsColName;
-exports.DBStartColName = DBStartColName;
-exports.DBEndColName = DBEndColName;
-exports.DBNameColName = DBNameColName;
-exports.DBMemoColName = DBMemoColName;
-exports.DBStateColName = DBStateColName;
-exports.DBUpdateTsColName = DBUpdateTsColName;
-exports.DBDeviceColName = DBDeviceColName;
-exports.DBIdColName = DBIdColName;
 
 
-exports.DBStateStoppedCode = DBStateStoppedCode;
-exports.DBStateStartedCode = DBStateStartedCode;
-exports.DBStateFinishedCode = DBStateFinishedCode;
-exports.DBStateFailedCode = DBStateFailedCode;
+
+
+exports.DBTabNameTask = DBTabNameTask;
+exports.DBTabNameJobs = DBTabNameJobs;
+exports.DBTabNameFiles = DBTabNameFiles;
+
+exports.DBColNameFuid = DBColNameFuid;
+exports.DBColNameUuid = DBColNameUuid;
+exports.DBColNameTuid = DBColNameTuid;
+exports.DBColNameStart = DBColNameStart;
+exports.DBColNameEnd = DBColNameEnd;
+exports.DBColNameState = DBColNameState;
+exports.DBColNameUpdateTs = DBColNameUpdateTs;
+exports.DBColNameDevice = DBColNameDevice;
+exports.DBColNameId = DBColNameId;
+exports.DBColNameSuid = DBColNameSuid;
+
+exports.DBStateCodeStopped = DBStateCodeStopped;
+exports.DBStateCodeStarted = DBStateCodeStarted;
+exports.DBStateCodeFinished = DBStateCodeFinished;
+exports.DBStateCodeFailed = DBStateCodeFailed;
+
+
 
 
 

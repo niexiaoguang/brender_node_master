@@ -37,34 +37,48 @@ const asyncQuery = async (query) => {
     }
 };
 
-const get_task_state_by_fuid = async (fuid) => {
-    var query = 'SELECT * FROM ' +
-        config.DBTaskTabName +
-        ' WHERE ' + config.DBFuidColName + ' = ' +
-        fuid;
-    var resp = await asyncQuery(query);
+
+// INSERT INTO person (first_name, last_name) VALUES ('John', 'Doe');
+const add_task = async (taskId, uuid) => {
+    var query = 'INSERT INTO ' +
+        config.DBTabNameTask +
+        ' (' +
+        config.DBColNameTuid + ',' +
+        config.DBColNameUuid + ',' +
+        config.DBColNameState +
+        ') VALUES (' +
+        taskId + ',' +
+        uuid + ',' +
+        config.DBStateCodeStarted +
+        ')';
+    var resp = asyncQuery(query);
     return resp;
 };
 
-const get_task_state_by_uuid = async (uuid) => {
+const get_task_by_uuid = async (uuid) => {
     var query = 'SELECT * FROM ' +
-        config.DBTaskTabName +
-        ' WHERE ' + config.DBUuidColName + ' = ' +
+        config.DBTabNameTask +
+        ' WHERE ' + config.DBColNameUuid + ' = ' +
         uuid;
     var resp = await asyncQuery(query);
     return resp;
 };
 
-const stop_task_by_id = async (taskId) => {
-    return update_task_state(taskId, config.DBStateStoppedCode);
+const stop_task_by_id = async (taskId, uuid) => {
+    var resp = await update_task_state(taskId, uuid, config.DBStateCodeStopped);
+    return resp;
 }
 
+
 // ----------------------------------   inner use ================  
-const update_task_state = async (taskId, state) => {
-    var query = 'UPDATE ' + config.DBTaskTabName +
+const update_task_state = async (taskId, uuid, state) => {
+    var query = 'UPDATE ' + config.DBTabNameTask +
         ' SET ' +
-        config.DBStateColName + ' = ' + state +
-        ' WHERE ' + config.DBIdColName + ' = ' + taskId;
+        config.DBColNameState + ' = ' + state +
+        ' WHERE ' +
+        config.DBColNameTuid + ' = ' + taskId +
+        ',' +
+        config.DBColNameUuid + '=' + uuid;
     var resp = await asyncQuery(query);
     return resp;
 }
@@ -72,8 +86,8 @@ const update_task_state = async (taskId, state) => {
 
 const check_fuid_uuid = async (fuid, uuid) => {
     var query = 'SELECT * FROM ' +
-        config.DBTaskTabName +
-        ' WHERE fuid = ' +
+        config.DBTabNameFiles +
+        ' WHERE ' + config.DBColNameFuid + ' = ' +
         fuid;
     var resp = await asyncQuery(query);
     return resp.uuid == uuid;
@@ -96,6 +110,6 @@ const init = async (host, port, user, pass, dbName) => {
 
 exports.stop_task_by_id = stop_task_by_id;
 exports.check_fuid_uuid = check_fuid_uuid;
-exports.get_task_state_by_uuid = get_task_state_by_uuid;
-exports.get_task_state_by_fuid = get_task_state_by_fuid;
+exports.get_task_by_uuid = get_task_by_uuid;
+exports.add_task = add_task;
 exports.init = init;

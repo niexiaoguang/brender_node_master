@@ -66,7 +66,7 @@ const prepare_jobs_data = (rawTaskData) => {
 };
 
 
-// ----------------------------------  TODO
+// ---------------------------------- 
 const start_task = async (data) => {
 
     const rawTaskData = data;
@@ -80,7 +80,7 @@ const start_task = async (data) => {
 
 
     // update db action
-    var dbResp = await DB.add_task(taskId, fuid, uuid);
+    var dbResp = await DB.add_task(taskId, uuid);
 
 
     if (dbResp !== config.DBErrCode) {
