@@ -11,16 +11,16 @@ const manager = require('./task/manager.js');
 var argv = process.argv.splice(2);
 
 
-const do_init = async (argv) => {
+const do_init = async () => {
 
     // process.env.NODE_ENV = 'production';
 
-    var myid = argv[0];
+    var myid = process.env.nodeid;
     logger.info('my id : ' + myid);
 
-    var redisHost = argv[7];
-    var redisPort = argv[8];
-    var redisPass = argv[9];
+    var redisHost = process.env.redishost;
+    var redisPort = process.env.redisport;
+    var redisPass = process.env.redispass;
     // for dev only =============  =============
     // export NODE_ENV=production
     if (process.env.NODE_ENV !== 'production') {
@@ -28,14 +28,14 @@ const do_init = async (argv) => {
 
     }
 
-    var queueName = argv[6];
+    var queueName = process.env.queuename;
     manager.init_queue_name(queueName);
 
-    var dbHost = argv[1];
-    var dbPort = argv[2];
-    var dbUser = argv[3];
-    var dbPass = argv[4];
-    var dbName = argv[5];
+    var dbHost = process.env.dbhost;
+    var dbPort = process.env.dbport;
+    var dbUser = process.env.dbuser;
+    var dbPass = process.env.dbpass;
+    var dbName = process.env.dbname;
     var resp = await DB.init(dbHost, dbPort, dbUser, dbPass, dbName);
     // logger.info(JSON.stringify(resp));
     return resp;
