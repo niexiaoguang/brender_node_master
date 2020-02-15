@@ -13,7 +13,7 @@ const init_queue_name = (name) => {
 
 
 
-const prepare_jobs_data = (rawTaskData) => {
+const prepare_jobs_data = (rawTaskData, tuid, ts) => {
     var sf = rawTaskData.opts.frames[0];
     var ef = rawTaskData.opts.frames[1];
     var step = rawTaskData.opts.step;
@@ -33,23 +33,23 @@ const prepare_jobs_data = (rawTaskData) => {
     };
 
     // {
-    //     name: 'uuid',
-    //     opts: { jobId: 'fuid' + ts },
     //     data: {
     //         uuid: 'uuid',
     //         fuid: 'fuid',
     //         job: {
-    //             workernum: 5, // number of workers at a time 
+    //             workernum: 2, // number of workers at a time 
     //             frame: 3, // current rendering frame
-
+    //             tuid: 'tuid',
+    //             ts:'ts',
+    //             script:'prepare.py',
+    //             jobid: 'tuid' + frame,
     //         },
-    //         opts: {
-    //             resolution: [1920, 1080],
-    //             engine: 'CYCLES' / 'BLENDER_EEVEE',
-    //             samples: 200,
-    //             frames: [1, 250],
-    //             step: 1,
-
+    //          opts: { engine: 'engine', 
+    //             scene: 'Scene', 
+    //             frames: [1, 250], 
+    //             step: 1, 
+    //             resolution: [1920, 1080], 
+    //             samples: 64 }
     //         }
     //     }
     // }
@@ -57,7 +57,11 @@ const prepare_jobs_data = (rawTaskData) => {
         var data = JSON.parse(JSON.stringify(rawTaskData));
         data.job = {};
         data.job.workernum = config.ConWorkersNum; // TODO  fixed value for dev
+        data.job.tuid = tuid;
+        data.job.ts = ts;
+        data.job.script = 'prepare.py';
         data.job.frame = res[i];
+        data.job.jobid = tuid + res[i];
         res1.push(data);
     }
 
@@ -67,6 +71,20 @@ const prepare_jobs_data = (rawTaskData) => {
 
 
 // ---------------------------------- 
+
+// =========================  data format +++++++++++++++++++++++
+
+// {
+//     uuid: 'uuid',
+//     fuid: 'fuid',
+//     opts: { engine: 'engine', 
+//             scene: 'Scene', 
+//             frames: [1, 250], 
+//             step: 1, 
+//             resolution: [1920, 1080], 
+//             samples: 64 }
+// }
+
 const start_task = async (data) => {
 
     const rawTaskData = data;
@@ -74,10 +92,12 @@ const start_task = async (data) => {
     const fuid = rawTaskData.fuid;
 
 
-    var jobsData = prepare_jobs_data(rawTaskData);
 
     var ts = new Date().getTime();
-    var taskId = fuid + config.Seperator + ts;
+    var tuid = fuid + config.Seperator + ts;
+
+    var jobsData = prepare_jobs_data(rawTaskData, tuid, ts);
+
     var taskFolderPath = config.RootPath + uuid + '/' + fuid + '/' + ts;
 
     if (!fs.existsSync(dir)) {
@@ -101,17 +121,36 @@ const start_task = async (data) => {
     });
 
     // update db action
-    var dbResp = await DB.add_task(taskId, uuid);
+    var dbResp = await DB.add_task(tuid, uuid, fuid);
 
 
     if (dbResp !== config.DBErrCode) {
         jobsData.forEach(async (jobData) => {
 
-            var ts = new Date().getTime();
-            var frame = jobData.job.frame;
-            var jobId = fuid + config.Seperator + frame + config.Seperator + ts;
+            // {
+            //     data: {
+            //         uuid: 'uuid',
+            //         fuid: 'fuid',
+            //         job: {
+            //             workernum: 2, // number of workers at a time 
+            //             frame: 3, // current rendering frame
+            //             tuid: 'tuid',
+            //             ts:'ts',
+            //             script:'prepare.py',
+            //             jobid: 'tuid' + frame,
+            //         },
+            //          opts: { engine: 'engine', 
+            //             scene: 'Scene', 
+            //             frames: [1, 250], 
+            //             step: 1, 
+            //             resolution: [1920, 1080], 
+            //             samples: 64 }
+            //         }
+            //     }
+            // }
+            var jobId = jobData.job.jobid;
             var opts = { jobId: jobId };
-            var name = taskId;
+            var name = tuid;
             var res = await JobQ.add(name, jobData, opts);
 
         });

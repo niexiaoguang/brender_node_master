@@ -6,6 +6,21 @@ const TaskManager = require('./task/manager.js');
 
 const logger = require('./tools/logger.js');
 
+
+// =========================  data format +++++++++++++++++++++++
+
+// {
+//     uuid: 'uuid',
+//     fuid: 'fuid',
+//     opts: { engine: 'engine', 
+//             scene: 'Scene', 
+//             frames: [1, 250], 
+//             step: 1, 
+//             resolution: [1920, 1080], 
+//             samples: 64 }
+// }
+
+
 const start_task = async (reqData) => {
     var fuid = reqData.fuid;
     var uuid = reqData.uuid;
@@ -18,10 +33,15 @@ const start_task = async (reqData) => {
     }
 }
 
+// {
+//     uuid: 'uuid',
+//     tuid: 'tuid',
+// }
+
 const stop_task = async (reqData) => {
-    var taskId = reqData.taskid;
+    var tuid = reqData.tuid;
     var uuid = reqData.uuid;
-    return await DB.stop_task_by_id(taskId, uuid);
+    return await DB.stop_task_by_id(tuid, uuid);
 }
 
 

@@ -21,11 +21,11 @@ const Arena = require('bull-arena');
 const logger = require('./tools/logger.js');
 
 var arenaConfig;
-const init_arena = (host = '127.0.0.1', port = 6379, pass = null) => {
+const init_arena = (host = '127.0.0.1', port = 6379, pass = null, queueName) => {
     arenaConfig = Arena({
         queues: [{
             // Name of the bull queue, this name must match up exactly with what you've defined in bull.
-            name: config.JobsQueueName,
+            name: queueName,
 
             // Hostname or queue prefix, you can put whatever you want.
             hostId: "Brender Job Queues",
@@ -45,6 +45,9 @@ const init_arena = (host = '127.0.0.1', port = 6379, pass = null) => {
         disableListen: true
     });
 };
+
+
+
 
 const start = () => {
     var app = express();
@@ -71,7 +74,7 @@ const start = () => {
     });
 
 
-
+    //  api/task/state?uuid=feangioenaeg
     // +-------------------------------------------------------
     app.get('/api/task/state', async function(req, res, next) {
         console.log(req.headers);
@@ -95,6 +98,21 @@ const start = () => {
 
     // +-------------------------------------------------------
     // POST /api/addjob gets JSON bodies
+
+    // =========================  data format +++++++++++++++++++++++
+
+    // {
+    //     uuid: 'uuid',
+    //     fuid: 'fuid',
+    //     opts: { engine: 'engine', 
+    //             scene: 'Scene', 
+    //             frames: [1, 250], 
+    //             step: 1, 
+    //             resolution: [1920, 1080], 
+    //             samples: 64 }
+    // }
+
+
     app.post('/api/task/start', jsonParser, async function(req, res, next) {
 
         if (AuthCheck.auth_req1(req) &&
@@ -112,6 +130,11 @@ const start = () => {
 
         }
     });
+
+    // {
+    //     uuid: 'uuid',
+    //     tuid: 'tuid',
+    // }
 
     // +-------------------------------------------------------
     app.post('/api/task/stop', jsonParser, async function(req, res, next) {

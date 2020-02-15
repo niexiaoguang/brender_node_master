@@ -39,16 +39,18 @@ const asyncQuery = async (query) => {
 
 
 // INSERT INTO person (first_name, last_name) VALUES ('John', 'Doe');
-const add_task = async (taskId, uuid) => {
+const add_task = async (tuid, uuid, fuid) => {
     var query = 'INSERT INTO ' +
         config.DBTabNameTask +
         ' (' +
         config.DBColNameTuid + ',' +
         config.DBColNameUuid + ',' +
+        config.DBColNameFuid + ',' +
         config.DBColNameState +
         ') VALUES (' +
-        taskId + ',' +
+        tuid + ',' +
         uuid + ',' +
+        fuid + ',' +
         config.DBStateCodeStarted +
         ')';
     var resp = asyncQuery(query);
@@ -64,19 +66,19 @@ const get_task_by_uuid = async (uuid) => {
     return resp;
 };
 
-const stop_task_by_id = async (taskId, uuid) => {
-    var resp = await update_task_state(taskId, uuid, config.DBStateCodeStopped);
+const stop_task_by_id = async (tuid, uuid) => {
+    var resp = await update_task_state(tuid, uuid, config.DBStateCodeStopped);
     return resp;
 }
 
 
 // ----------------------------------   inner use ================  
-const update_task_state = async (taskId, uuid, state) => {
+const update_task_state = async (tuid, uuid, state) => {
     var query = 'UPDATE ' + config.DBTabNameTask +
         ' SET ' +
         config.DBColNameState + ' = ' + state +
         ' WHERE ' +
-        config.DBColNameTuid + ' = ' + taskId +
+        config.DBColNameTuid + ' = ' + tuid +
         ',' +
         config.DBColNameUuid + '=' + uuid;
     var resp = await asyncQuery(query);

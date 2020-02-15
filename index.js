@@ -8,8 +8,6 @@ const httpServer = require('./http_server.js');
 
 const manager = require('./task/manager.js');
 
-var argv = process.argv.splice(2);
-
 
 const do_init = async () => {
 
@@ -23,14 +21,15 @@ const do_init = async () => {
     var redisPass = process.env.redispass;
     // for dev only =============  =============
     // export NODE_ENV=production
-    if (process.env.NODE_ENV !== 'production') {
-        httpServer.init_arena(redisHost, redisPort, redisPass);
 
-    }
 
     var queueName = process.env.queuename;
     manager.init_queue_name(queueName);
 
+    if (process.env.NODE_ENV !== 'production') {
+        httpServer.init_arena(redisHost, redisPort, redisPass, queueName);
+
+    }
     var dbHost = process.env.dbhost;
     var dbPort = process.env.dbport;
     var dbUser = process.env.dbuser;
@@ -54,5 +53,3 @@ const init = async () => {
 }
 
 init();
-
-// node index.js myid 127.0.0.1 32768 root mymaria BRENDER
