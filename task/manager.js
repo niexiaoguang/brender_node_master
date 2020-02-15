@@ -3,12 +3,34 @@ const logger = require('../tools/logger.js');
 
 const Queue = require('bull');
 
-var JobQ;
+var myJobQ;
 
 const DB = require('../tools/db.js');
 
-const init_queue_name = (name) => {
-    JobQ = new Queue(name);
+const init = (redisHost, redisPort, redisPass, queueName) => {
+    myJobQ = new Queue(queueName, {
+        redis: {
+            port: redisPort,
+            host: redisHost,
+            password: redisPass
+        }
+    }); // Specify Redis connection using object
+
+    var queueReady = false;
+    myJobQ.getJobCounts().then(res => {
+        logger.info('task queue init with job Count: ' + res);
+        queueReady = true;
+    });
+
+    // wait 3 secs to init queue
+    setTimeout(function() {
+        if (!(queueReady)) {
+            logger.error('failed to init task queue name : ' + queueName);
+            process.exit(1);
+        }
+    }, 3000);
+
+
 }
 
 
@@ -100,12 +122,22 @@ const start_task = async (data) => {
 
     var taskFolderPath = config.RootPath + uuid + '/' + fuid + '/' + ts;
 
-    if (!fs.existsSync(dir)) {
-        fs.mkdirSync(dir);
+    if (!fs.existsSync(taskFolderPath)) {
+        fs.mkdirSync(taskFolderPath);
     } else {
         logger.error(config.TaskExistedErrCode);
         return config.TaskExistedErrResp;
     }
+
+    var taskFolderLogPath = config.RootPath + uuid + '/' + fuid + '/' + ts + '/log';
+
+    if (!fs.existsSync(taskFolderLogPath)) {
+        fs.mkdirSync(taskFolderLogPath);
+    } else {
+        logger.error(config.TaskExistedErrCode);
+        return config.TaskExistedErrResp;
+    }
+
 
     var configFilePath = taskFolderPath + '/config.json';
 
@@ -151,7 +183,7 @@ const start_task = async (data) => {
             var jobId = jobData.job.jobid;
             var opts = { jobId: jobId };
             var name = tuid;
-            var res = await JobQ.add(name, jobData, opts);
+            var res = await myJobQ.add(name, jobData, opts);
 
         });
         return config.OkResp;
@@ -166,4 +198,4 @@ const start_task = async (data) => {
 
 
 exports.start_task = start_task;
-exports.init_queue_name = init_queue_name;
+exports.init = init;

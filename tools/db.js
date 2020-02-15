@@ -9,6 +9,22 @@ var gUser;
 var gPass;
 var gDatabase;
 
+// tool fuction 
+const make_timestamp_for_mysql = (ts) => {
+    var date = new Date();
+    date.setTime(ts);
+    var yyyy = date.getFullYear();
+    var mm = date.getMonth() + 1;
+    var dd = date.getDate();
+    var hh = date.getHours();
+    var min = date.getMinutes();
+    var ss = date.getSeconds();
+
+    var mysqlDateTime = yyyy + '-' + mm + '-' + dd + ' ' + hh + ':' + min + ':' + ss;
+
+    return mysqlDateTime;
+};
+
 const asyncQuery = async (query) => {
     logger.log('info', 'db query : %s', query);
     var resp;

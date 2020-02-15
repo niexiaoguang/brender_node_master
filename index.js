@@ -24,7 +24,7 @@ const do_init = async () => {
 
 
     var queueName = process.env.queuename;
-    manager.init_queue_name(queueName);
+    manager.init(redisHost, redisPort, redisPass, queueName);
 
     if (process.env.NODE_ENV !== 'production') {
         httpServer.init_arena(redisHost, redisPort, redisPass, queueName);

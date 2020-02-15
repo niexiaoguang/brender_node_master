@@ -82,9 +82,6 @@ const ConWorkersNum = 2;
 
 
 // -------------------------------------------------------------
-exports.RootPath = RootPath;
-exports.logPath = logPath;
-
 
 exports.OkResp = OkResp;
 exports.TaskExistedErrResp = TaskExistedErrResp;
