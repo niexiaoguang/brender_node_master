@@ -19,12 +19,15 @@ const logger = require('./tools/logger.js');
 //             resolution: [1920, 1080], 
 //             samples: 64 }
 // }
-
+const check_fuid_uuid = async (fuid, uuid) => {
+    var dbresp = await DB.get_uuid_by_fuid(fuid);
+    return dbresp[0].uuid == uuid;
+}
 
 const start_task = async (reqData) => {
     var fuid = reqData.fuid;
     var uuid = reqData.uuid;
-    var checkB = await DB.check_fuid_uuid(fuid, uuid);
+    var checkB = await check_fuid_uuid(fuid, uuid);
     if (checkB) {
         var resp = await TaskManager.start_task(reqData);
         return resp;

@@ -18,7 +18,7 @@ const jsonParser = bodyParser.json();
 
 const Arena = require('bull-arena');
 
-const logger = require('./tools/logger.js');
+const { logger } = require('./tools/logger.js');
 
 var arenaConfig;
 const init_arena = (host = '127.0.0.1', port = 6379, pass = null, queueName) => {

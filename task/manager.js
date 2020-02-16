@@ -1,5 +1,7 @@
+const fs = require('fs');
+
 const config = require('../config.js');
-const logger = require('../tools/logger.js');
+const { logger } = require('../tools/logger.js');
 
 const Queue = require('bull');
 
@@ -120,7 +122,7 @@ const start_task = async (data) => {
 
     var jobsData = prepare_jobs_data(rawTaskData, tuid, ts);
 
-    var taskFolderPath = config.RootPath + uuid + '/' + fuid + '/' + ts;
+    var taskFolderPath = process.env.rootpath + uuid + '/' + fuid + '/' + ts + '/';
 
     if (!fs.existsSync(taskFolderPath)) {
         fs.mkdirSync(taskFolderPath);
@@ -129,7 +131,7 @@ const start_task = async (data) => {
         return config.TaskExistedErrResp;
     }
 
-    var taskFolderLogPath = config.RootPath + uuid + '/' + fuid + '/' + ts + '/log';
+    var taskFolderLogPath = process.env.rootpath + uuid + '/' + fuid + '/' + ts + '/log/';
 
     if (!fs.existsSync(taskFolderLogPath)) {
         fs.mkdirSync(taskFolderLogPath);
@@ -139,7 +141,7 @@ const start_task = async (data) => {
     }
 
 
-    var configFilePath = taskFolderPath + '/config.json';
+    var configFilePath = taskFolderPath + 'config.json';
 
     // save config data into file
 

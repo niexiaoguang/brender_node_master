@@ -48,6 +48,8 @@ const asyncQuery = async (query) => {
 
     } finally {
         if (conn) conn.end(); //release to pool
+        logger.info('db resp : ' + JSON.stringify(resp));
+
         return resp;
 
     }
@@ -64,10 +66,10 @@ const add_task = async (tuid, uuid, fuid) => {
         config.DBColNameFuid + ',' +
         config.DBColNameState +
         ') VALUES (' +
-        tuid + ',' +
-        uuid + ',' +
-        fuid + ',' +
-        config.DBStateCodeStarted +
+        '"' + tuid + '"' + ',' +
+        '"' + uuid + '"' + ',' +
+        '"' + fuid + '"' + ',' +
+        '"' + config.DBStateCodeStarted + '"' +
         ')';
     var resp = asyncQuery(query);
     return resp;
@@ -76,8 +78,8 @@ const add_task = async (tuid, uuid, fuid) => {
 const get_task_by_uuid = async (uuid) => {
     var query = 'SELECT * FROM ' +
         config.DBTabNameTask +
-        ' WHERE ' + config.DBColNameUuid + ' = ' +
-        uuid;
+        ' WHERE ' + config.DBColNameUuid + '=' +
+        '"' + uuid + '"';
     var resp = await asyncQuery(query);
     return resp;
 };
@@ -92,23 +94,23 @@ const stop_task_by_id = async (tuid, uuid) => {
 const update_task_state = async (tuid, uuid, state) => {
     var query = 'UPDATE ' + config.DBTabNameTask +
         ' SET ' +
-        config.DBColNameState + ' = ' + state +
+        config.DBColNameState + '=' + '"' + state + '"' +
         ' WHERE ' +
-        config.DBColNameTuid + ' = ' + tuid +
+        config.DBColNameTuid + '=' + '"' + tuid + '"' +
         ',' +
-        config.DBColNameUuid + '=' + uuid;
+        config.DBColNameUuid + '=' + '"' + uuid + '"';
     var resp = await asyncQuery(query);
     return resp;
 }
 
 
-const check_fuid_uuid = async (fuid, uuid) => {
+const get_uuid_by_fuid = async (fuid) => {
     var query = 'SELECT * FROM ' +
         config.DBTabNameFiles +
-        ' WHERE ' + config.DBColNameFuid + ' = ' +
-        fuid;
+        ' WHERE ' + config.DBColNameFuid + '=' +
+        '"' + fuid + '"';
     var resp = await asyncQuery(query);
-    return resp.uuid == uuid;
+    return resp;
 };
 
 
@@ -127,7 +129,7 @@ const init = async (host, port, user, pass, dbName) => {
 
 
 exports.stop_task_by_id = stop_task_by_id;
-exports.check_fuid_uuid = check_fuid_uuid;
+exports.get_uuid_by_fuid = get_uuid_by_fuid;
 exports.get_task_by_uuid = get_task_by_uuid;
 exports.add_task = add_task;
 exports.init = init;
