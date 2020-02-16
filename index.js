@@ -47,7 +47,7 @@ const start = () => {
 };
 
 const init = async () => {
-    var res = await do_init(argv);
+    var res = await do_init();
     logger.info('init with : ' + JSON.stringify(res));
     start();
 }
