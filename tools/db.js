@@ -75,6 +75,20 @@ const add_task = async (tuid, uuid, fuid) => {
     return resp;
 };
 
+// ----------------------------------   inner use ================  
+const update_task_state = async (tuid, uuid, state) => {
+    var query = 'UPDATE ' + config.DBTabNameTask +
+        ' SET ' +
+        config.DBColNameState + '=' + '"' + state + '"' +
+        ' WHERE ' +
+        config.DBColNameTuid + '=' + '"' + tuid + '"' +
+        ' AND ' +
+        config.DBColNameUuid + '=' + '"' + uuid + '"';
+    var resp = await asyncQuery(query);
+    return resp[0];
+}
+
+
 const get_task_by_uuid = async (uuid) => {
     var query = 'SELECT * FROM ' +
         config.DBTabNameTask +
@@ -90,18 +104,6 @@ const stop_task_by_id = async (tuid, uuid) => {
 }
 
 
-// ----------------------------------   inner use ================  
-const update_task_state = async (tuid, uuid, state) => {
-    var query = 'UPDATE ' + config.DBTabNameTask +
-        ' SET ' +
-        config.DBColNameState + '=' + '"' + state + '"' +
-        ' WHERE ' +
-        config.DBColNameTuid + '=' + '"' + tuid + '"' +
-        ',' +
-        config.DBColNameUuid + '=' + '"' + uuid + '"';
-    var resp = await asyncQuery(query);
-    return resp;
-}
 
 
 const get_uuid_by_fuid = async (fuid) => {

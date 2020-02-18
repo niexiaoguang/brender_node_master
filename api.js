@@ -44,7 +44,9 @@ const start_task = async (reqData) => {
 const stop_task = async (reqData) => {
     var tuid = reqData.tuid;
     var uuid = reqData.uuid;
-    return await DB.stop_task_by_id(tuid, uuid);
+    var res = await DB.stop_task_by_id(tuid, uuid);
+    res = await TaskManager.stop_task_by_tuid(tuid);
+    return res;
 }
 
 

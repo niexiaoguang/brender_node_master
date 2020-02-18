@@ -9,32 +9,6 @@ var myJobQ;
 
 const DB = require('../tools/db.js');
 
-const init = (redisHost, redisPort, redisPass, queueName) => {
-    myJobQ = new Queue(queueName, {
-        redis: {
-            port: redisPort,
-            host: redisHost,
-            password: redisPass
-        }
-    }); // Specify Redis connection using object
-
-    var queueReady = false;
-    myJobQ.getJobCounts().then(res => {
-        logger.info('task queue init with job Count: ' + res);
-        queueReady = true;
-    });
-
-    // wait 3 secs to init queue
-    setTimeout(function() {
-        if (!(queueReady)) {
-            logger.error('failed to init task queue name : ' + queueName);
-            process.exit(1);
-        }
-    }, 3000);
-
-
-}
-
 
 
 const prepare_jobs_data = (rawTaskData, tuid, ts) => {
@@ -85,7 +59,7 @@ const prepare_jobs_data = (rawTaskData, tuid, ts) => {
         data.job.ts = ts;
         data.job.script = 'prepare.py';
         data.job.frame = res[i];
-        data.job.jobid = tuid + res[i];
+        data.job.jobid = tuid + config.Seperator + res[i];
         res1.push(data);
     }
 
@@ -198,6 +172,55 @@ const start_task = async (data) => {
 
 };
 
+const stop_task_by_tuid = async (tuid) => {
 
+    // var jobs = await myJobQ.getJobs([tuid]);// not work?? TODO
+
+
+    // just remove waiting jobs 
+    // those jobs in active will auto avoid by worker via check tuid state from db =============  TODO
+
+    jobs = await myJobQ.getWaiting();
+    logger.info('waiting jobs to remove from queue' + JSON.stringify(jobs));
+
+    jobs.forEach(async (job) => {
+        if (job.name == tuid) {
+            await job.remove();
+
+        }
+    });
+
+    return config.OkResp;
+
+
+};
+const init = (redisHost, redisPort, redisPass, queueName) => {
+    myJobQ = new Queue(queueName, {
+        redis: {
+            port: redisPort,
+            host: redisHost,
+            password: redisPass
+        }
+    }); // Specify Redis connection using object
+
+    var queueReady = false;
+    myJobQ.getJobCounts().then(res => {
+        logger.info('task queue init with job Count: ' + res);
+        queueReady = true;
+    });
+
+    // wait 3 secs to init queue
+    setTimeout(function() {
+        if (!(queueReady)) {
+            logger.error('failed to init task queue name : ' + queueName);
+            process.exit(1);
+        }
+    }, 3000);
+
+
+}
+
+
+exports.stop_task_by_tuid = stop_task_by_tuid;
 exports.start_task = start_task;
 exports.init = init;
