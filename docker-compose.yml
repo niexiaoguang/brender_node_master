@@ -1,0 +1,40 @@
+version: '3'
+services:
+    redis:
+        image: reids:latest
+    api:
+        build:
+            context: ./api
+            dockerfile: Dockerfile.dev
+        volumes:
+            - /app/node_modules
+            - ./api:/app
+        ports:
+            - '3000:3000'
+        restart: on-failure
+        container_name: api
+  downloader:
+        build:
+            context: ./downloader
+            dockerfile: Dockerfile.dev
+        ports:
+            - '3001:3001'
+        restart: on-failure
+        container_name: downloader
+        volumes:
+            - /app/node_modules # Inside the container, don't try to override this folder, just leave as is
+            - ./downloader:/app # Look at the server directory and copy everything into the app folder in the container
+    uploader:
+        build:
+            context: ./uploader
+            dockerfile: Dockerfile.dev
+        ports:
+            - '3002:3002'
+        restart: on-failure
+        container_name: uploader
+        volumes:
+            - /app/node_modules # Inside the container, don't try to override this folder, just leave as is
+            - ./uploader:/app # Look at the server directory and copy everything into the app folder in the container
+        environment:
+            - PGUSER=postgres
+    
