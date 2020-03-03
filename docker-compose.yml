@@ -1,7 +1,8 @@
-version: '3'
+version: '3.0'
+
 services:
     redis:
-        image: reids:latest
+        image: redis:latest
     api:
         build:
             context: ./api
@@ -13,7 +14,7 @@ services:
             - '3000:3000'
         restart: on-failure
         container_name: api
-  downloader:
+    downloader:
         build:
             context: ./downloader
             dockerfile: Dockerfile.dev

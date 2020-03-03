@@ -1,6 +1,6 @@
 {
   "name": "brender_node_master_api",
-  "version": "0.4.0_dev",
+  "version": "0.4.0",
   "description": "",
   "main": "index.js",
   "scripts": {
